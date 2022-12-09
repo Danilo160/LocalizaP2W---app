@@ -13,10 +13,17 @@ export default function Login({navigation}){
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
 
-    useEffect(()=>{
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => false)
-        return () => backHandler
-    },[])
+    const backAction = () => {
+        navigation.goBack()
+        return true;
+    };
+
+    useEffect(() => {
+      BackHandler.addEventListener("hardwareBackPress", backAction);
+    
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", backAction);
+    }, []);
 
     const verify = () =>{
         setloading(true)
@@ -41,7 +48,7 @@ export default function Login({navigation}){
             redirect: 'follow'
           };
           
-          fetch("https://localiza-p2w-api.herokuapp.com/place/signIn", requestOptions)
+          fetch("https://localiza-p2w-api.vercel.app/place/signIn", requestOptions)
             .then((res) => res.json())
             .then((data) => {
                 if(data.message =="Place not found"){
@@ -52,7 +59,11 @@ export default function Login({navigation}){
                         Alert.alert("Falha ao autenticar","Senha incorreta!")
                         setloading(false)
                     }else{
-                        navigation.navigate("profile", {placeName: data.place.name})
+                        var fotoPerfil = ''
+                        if(data.place.resource){
+                            fotoPerfil = data.place.resource.secure_url
+                        }
+                        navigation.navigate("profile", {placeId: data.place._id, placeName: data.place.name, token: data.token, photo: fotoPerfil})
                         setloading(false)
                     }
                     
@@ -99,7 +110,7 @@ export default function Login({navigation}){
 
     return(
 
-        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container} > 
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container} keyboardVerticalOffset={30} > 
             <ScrollView>  
             <HeaderImage/>
             <View style={styles.sectionInput}>

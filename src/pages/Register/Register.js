@@ -1,14 +1,14 @@
-import React, {Fragment, useState} from "react";
+import React, {useState,useEffect} from "react";
 import { styles } from "./Styles";
-import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ActivityIndicator  } from "react-native";
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ActivityIndicator, BackHandler } from "react-native";
 import { TextInput } from 'react-native-paper';
 import { ScrollView } from "react-native-gesture-handler";
-//import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios"
 
 export default function Register({navigation}){
 
     const [loading, setloading] = useState(false)
+    const [enable, setEnable] = useState(true)
 
 
     const [nome, setNome] = useState("")
@@ -23,6 +23,19 @@ export default function Register({navigation}){
     const [whatsapp, setWhatsapp] = useState("")
     const [latitude, setLatitude] = useState("")
     const [longitude, setLongitude] = useState("")
+
+
+    const backAction = () => {
+      navigation.goBack()
+      return true;
+    };
+
+    useEffect(() => {
+      BackHandler.addEventListener("hardwareBackPress", backAction);
+    
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", backAction);
+    }, []);
 
     const maskCEP = value => {
         return value.replace(/\D/g, "").replace(/^(\d{5})(\d{3})+?$/, "$1-$2");
@@ -69,7 +82,7 @@ export default function Register({navigation}){
           address: endereco,
           district: bairro,
           number: parseInt(numero),
-          codinates:[parseInt(latitude), parseInt(longitude)]
+          coordinates:[parseFloat(longitude), parseFloat(latitude)]
         }
 
       })
@@ -85,7 +98,7 @@ export default function Register({navigation}){
         redirect: 'follow'
       };
       
-      fetch("https://localiza-p2w-api.herokuapp.com/place/register", requestOptions)
+      fetch("https://localiza-p2w-api.vercel.app/place/register", requestOptions)
         .then((res) => res.json())
         .then((data) => {
           if(data.message=== "Place already exists"){
@@ -96,9 +109,10 @@ export default function Register({navigation}){
               Alert.alert("Falha ao registrar", "Alguma falha não identificada!")
               setloading(false)
             } else{
+              var fotoPerfil = ''
               Alert.alert("SUCESSO", "Cadastro realizado com sucesso! Iremos redirecionar para o perfil!",
               [
-                {text: 'Ok', onPress: ()=> navigation.navigate("profile", {placeName: data.place.name})},
+                {text: 'Ok', onPress: ()=> navigation.navigate("profile", {placeId: data.place._id, token: data.token, placeName: data.place.name, photo: fotoPerfil})},
               ])
               setloading(false)
             }           
@@ -107,10 +121,6 @@ export default function Register({navigation}){
         }).catch((err) => Alert.alert("Erro", "Erro no servidor!"))
     }
 
-    const getCoordinates = () =>{
-        console.log(latitude, longitude)
-
-    }
 
     const handleSubmit = (e) =>{
        
@@ -121,7 +131,7 @@ export default function Register({navigation}){
   
     const buscarcep = () =>{
 
-  
+        setEnable(true)
         axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`).then(({ data }) => {
           
           if(data){
@@ -141,6 +151,7 @@ export default function Register({navigation}){
             const long = data.location.coordinates.longitude
             setLatitude(lat)
             setLongitude(long)
+            setEnable(false)
           }
           else{
             Alert.alert("Erro","Cep não encontrado!")
@@ -184,15 +195,6 @@ export default function Register({navigation}){
         )
     }
 
-    const LocalizaTeste = () =>{
-      return(
-          <View>
-              <TouchableOpacity style={styles.button} onPress={getCoordinates} >
-                  <Text style={styles.textButton}>Localizar Coordenadas</Text>
-              </TouchableOpacity>
-          </View>
-      )
-  }
 
     return(
 
@@ -248,17 +250,6 @@ export default function Register({navigation}){
                     />
                 </View>
 
-                <View style={styles.sectionInput}>
-                    <TextInput
-                        style={styles.input}
-                        label="Endereço"
-                        placeholder="Endereço"
-                        value={endereco}
-                        textContentType="streetAddressLine1"
-                        onChangeText={setEndereco}
-                    />
-                </View>
-
                 
                 <View style={styles.sectionRow}>
                     <View style={styles.sectionInput2}>
@@ -267,6 +258,7 @@ export default function Register({navigation}){
                         label="Cidade"
                         placeholder="Cidade"
                         value={cidade}
+                        disabled={enable}
                         textContentType="addressCity"
                         onChangeText={setCidade}
                     />
@@ -277,10 +269,24 @@ export default function Register({navigation}){
                         label="UF"
                         placeholder="UF"
                         value={uf}
+                        disabled={enable}
                         textContentType="addressState"
                         onChangeText={setUf}
                     />
                     </View>
+                </View>
+
+                
+                <View style={styles.sectionInput}>
+                    <TextInput
+                        style={styles.input}
+                        label="Endereço"
+                        placeholder="Endereço"
+                        value={endereco}
+                        disabled={enable}
+                        textContentType="streetAddressLine1"
+                        onChangeText={setEndereco}
+                    />
                 </View>
 
                 <View style={styles.sectionRow}>
@@ -290,6 +296,7 @@ export default function Register({navigation}){
                         label="Bairro"
                         placeholder="Bairro"
                         value={bairro}
+                        disabled={enable}
                         textContentType="sublocality"
                         onChangeText={setBairro}
                     />

@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
         marginTop:"3%",
         backgroundColor:"#E7E7E7",
         width:responsiveWidth(90),
-        borderRadius:5,
+        borderRadius:10,
         alignItems:"center",
         alignSelf:"center",
         borderColor:"purple",
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     button:{
         marginTop:"5%",
         width:responsiveWidth(90),
-        borderRadius:5,
+        borderRadius:10,
         backgroundColor:"#9F5DF5",
         padding:15,
         margin:10,

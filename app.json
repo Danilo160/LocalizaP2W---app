@@ -4,10 +4,10 @@
     "slug": "LocalizaP2W",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon2.png",
+    "icon": "./assets/iconapp.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash2.png",
+      "image": "./assets/splashapp.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,13 +21,28 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon2.png",
+        "foregroundImage": "./assets/adaptive-iconapp.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.danilow22.LocalizaP2W"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }

@@ -9,76 +9,34 @@ export const styles = StyleSheet.create({
 
     container2:{
       flex:1,
-      marginTop:"10%", 
+      marginTop:"3%", 
       alignItems:"center",
     },
 
     item:{
       width:responsiveWidth(90),
-      padding:30,
-      backgroundColor:"#FFFFFF"/* "#D8D8DE" */, 
-      marginBottom:"10%", 
-      borderRadius:15
+      padding:10,
+      backgroundColor:"#612F74", 
+      marginBottom:"5%", 
     },
 
-    text: {
-        marginTop:"5%",
-        color:"white",
-        fontSize:20,
-        lineHeight:30,
-        fontWeight:"bold",
-        textAlign:"center"
 
-    },
-
-    
-    textFilter: {
-      color:"white",
-      fontSize:20,
-      lineHeight:30,
-      fontWeight:"bold",
-      textAlign:"center"
-
-  },
-
-  headerFilter:{
-    display:"flex", 
-    flexDirection:"row", 
-    justifyContent:"space-between",
-    paddingLeft:50, 
-    paddingRight:50, 
-    paddingTop:10, 
-    paddingBottom:10,
-    backgroundColor:"#73388A",
-  },
-
-    textLocals:{
+    textEvent:{
       fontSize: responsiveFontSize(2),
       fontWeight:"bold",
       lineHeight:20,
       marginTop:"5%",
+      color:"white"
+    },
 
-  },
-
-  textLocals1:{
-    fontSize: responsiveFontSize(1.5),
-    lineHeight:20,
-    marginBottom:"5%"
-
-},
-
-    textLocals2:{
-      fontSize: responsiveFontSize(1.6),
-      marginTop:"3%",
-
-  },
-
-  textLocals3:{
-    fontSize: responsiveFontSize(1.6),
-    marginTop:"5%",
-    color:"#0000FF"
-
-},
+    textDateHour:{
+      fontSize: responsiveFontSize(1.8),
+      fontWeight:"bold",
+      lineHeight:20,
+      marginTop:"-5%",
+      marginBottom:"5%",
+      color:"white"
+    },
 
 divShare:{
   alignSelf:"center",
@@ -86,8 +44,8 @@ divShare:{
   width:responsiveWidth(90),
   padding:30,
   backgroundColor:"#FAFAFC",  
-  borderBottomEndRadius:15,
-  borderBottomStartRadius:15
+  borderBottomEndRadius:30,
+  borderBottomStartRadius:30
 },
     sectionInput:{
         marginTop:"5%",
@@ -121,12 +79,10 @@ divShare:{
         width:responsiveWidth(87),
         marginTop:-2,
         marginBottom:-2,
-        borderRadius:15,
-        padding: 2.5
     },
 
     buttonPrimary:{
-      marginTop:"-3%",
+      marginTop:-3,
       width:responsiveWidth(50),
       borderRadius:5,
       backgroundColor:"#9F5DF5",
