@@ -84,7 +84,7 @@ export default function GameList({navigation, route}){
         <View style={styles.container}>
         <ScrollView>
         
-        {loading===true?<ActivityIndicator style={{alignSelf:"center", marginTop:"60%"}} color="white" size={30} />
+        {loading===true?<ActivityIndicator style={{alignSelf:"center", marginTop:"80%"}} color="white" size={30} />
         :
         locals.length === 0 ? 
         <View style={styles.container2}>

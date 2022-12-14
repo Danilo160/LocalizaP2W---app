@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { styles } from "./Styles";
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, ActivityIndicator, BackHandler} from "react-native";
 import { TextInput } from 'react-native-paper';
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import DatePicker from 'react-native-modern-datepicker';
 
 export default function Entertainment({navigation, route}){

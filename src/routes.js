@@ -10,6 +10,7 @@ import Register from "./pages/Register/Register";
 import Profile from "./pages/Profile/Profile";
 import Entertainment from "./pages/Entertainment/Entertainment";
 import GameList from "./pages/GameList/GameList";
+import Gallery from "./pages/Gallery/Gallery";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,15 @@ function Routes(){
                 name = "gamelist" 
                 component={GameList} 
                 options={{ title: 'Lista de jogos', 
+                headerStyle:{backgroundColor:"#612F74"},
+                headerTintColor:"#fff",
+                headerShadowVisible:false,
+                }} />
+
+                <Stack.Screen 
+                name = "gallery" 
+                component={Gallery} 
+                options={{ title: 'Adicionar imagens do local', 
                 headerStyle:{backgroundColor:"#612F74"},
                 headerTintColor:"#fff",
                 headerShadowVisible:false,

@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from "react";
 import { styles } from "./Styles";
-import { View, Text, Image, TouchableOpacity,BackHandler, Alert, ActivityIndicator, ScrollView, Modal, Pressable} from "react-native";
+import { View, Text, Image, TouchableOpacity,BackHandler, Alert, ActivityIndicator, ScrollView, Modal} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import imageprofile  from "../../../assets/icons/profile.png"
 import * as ImagePicker from 'expo-image-picker';
@@ -198,7 +198,7 @@ export default function Profile({navigation, route}){
                         </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonPrimary} onPress={()=> Alert.alert("Em breve", "Função ainda não definida")}>
+                <TouchableOpacity style={styles.buttonPrimary} onPress={()=> navigation.navigate('gallery', {placeId: route.params.placeId, token: route.params.token})}>
                         <View>
                             <Text style={styles.textButton}>Cadastrar imagens</Text>
                         </View>
