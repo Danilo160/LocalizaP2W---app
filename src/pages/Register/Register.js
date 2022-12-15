@@ -38,14 +38,14 @@ export default function Register({navigation}){
     }, []);
 
     const maskCEP = value => {
-        return value.replace(/\D/g, "").replace(/^(\d{5})(\d{3})+?$/, "$1-$2");
+        return value.replace(/\D/g, "").replace(/^(\d{5})(\d)/,"$1-$2");
       };
 
     const maskPhone = value => {
         return value
           .replace(/\D/g, "")
-          .replace(/(\d{2})(\d)/, "($1) $2")
-          .replace(/(\d{5})(\d{4})(\d)/, "$1-$2");
+          .replace(/^(\d\d)(\d)/g,"($1)$2") 
+          .replace(/(\d{5})(\d)/,"$1-$2"); 
           
         
       };
@@ -55,7 +55,8 @@ export default function Register({navigation}){
         setBairro('')
         setCidade('')
         setUf('')
-        setCep('')    
+        setEnable(true)
+        /* setCep('') */    
       }
 
     const verify = () =>{
@@ -128,13 +129,54 @@ export default function Register({navigation}){
         verify()
     
       }
-  
+
     const buscarcep = () =>{
+        setEnable(true)
+        var requestOptions = {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': 'Token token=61648e55e3041e2ea1b3016a69ab0e54'
+          },
+          redirect: 'follow'
+        };
+        
+        fetch(`https://www.cepaberto.com/api/v3/cep?cep=${cep.replace("-","")}`, requestOptions)
+          .then((res) => res.json())
+          .then((data) => {
+              
+              if(Object.keys(data).length>1){
+                setEndereco(data.logradouro)
+                setBairro(data.bairro)
+                setCidade(data.cidade.nome)
+                setUf(data.estado.sigla)
+                setLatitude(data.latitude)
+                setLongitude(data.longitude)
+              }else{
+                if(Object.keys(data).length===0){
+                  Alert.alert("Erro","Cep inválido ou não econtrado!")
+                  setVazio()
+                }else{
+                  if(Object.keys(data).length===1){
+                    Alert.alert("Erro","Cep não pode ser vazio!")
+                    setVazio()
+                    console.log("entrou")
+                  }
+                }
+
+              }
+           
+          }).catch((err) => Alert.alert("Erro", "Falha no servidor do CEP!"), setVazio(), setEnable(false))
+      }
+  
+/*     const buscarcep = () =>{
 
         setEnable(true)
         axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`).then(({ data }) => {
           
-          if(data){
+          if(data.cep){
             if(data.street===undefined){
               setEndereco("")
             }else{
@@ -154,6 +196,7 @@ export default function Register({navigation}){
             setEnable(false)
           }
           else{
+            console.log(data.message)
             Alert.alert("Erro","Cep não encontrado!")
             setVazio()
           }
@@ -161,10 +204,11 @@ export default function Register({navigation}){
   
         })
         .catch(err => { 
+          console.log(err.service)
           Alert.alert("Erro","Cep vazio ou inválido!")
           setVazio()
         })
-      }
+      } */
 
     const Title = () => {
         return(
@@ -243,10 +287,11 @@ export default function Register({navigation}){
                         label="CEP"
                         placeholder="CEP"
                         value={maskCEP(cep)}
-                        onBlur ={buscarcep}
+                        maxLength={9}
+                        onSubmitEditing = {buscarcep}
                         textContentType="postalCode"
                         keyboardType="numeric"
-                        onChangeText={setCep}
+                        onChangeText={text=>setCep(text)}
                     />
                 </View>
 
@@ -318,13 +363,16 @@ export default function Register({navigation}){
                     <TextInput
                         style={styles.input}
                         label="WhatsApp"
-                        placeholder="(DD) XXXXX-XXXX"
+                        placeholder="(DD)XXXXX-XXXX"
+                        maxLength={14}
                         value={maskPhone(whatsapp)}
                         keyboardType="numeric"
                         textContentType="number"
                         onChangeText={setWhatsapp}
                     />
                 </View>
+                
+
             <Acess/>
             
             {/*<Text style={styles.text2}>{'Ainda não tem acesso?'}</Text>

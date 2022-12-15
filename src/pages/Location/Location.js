@@ -15,7 +15,7 @@ import mapmarker from "../../../assets/icons/marker-map.png"
 import logowhats from "../../../assets/icons/logo-whats.png"
 import whatsapp from "../../../assets/icons/whatsapp.png"
 import share from "../../../assets/icons/share.png"
-import noimage from "../../../assets/icons/no-image.png"
+import noimages from "../../../assets/icons/noimages.png"
 
 export default function Home({navigation, route}){
 
@@ -45,7 +45,7 @@ export default function Home({navigation, route}){
 
 
     const send = async (telefone, local) =>{
-        await Linking.openURL(`https://api.whatsapp.com/send?phone=${telefone}&text=Olá!%20Encontrei%20o%20${local}%20pelo%20LocalizaP2W.%20Gostaria%20de%20mais%20informações!`)
+        await Linking.openURL(`https://api.whatsapp.com/send?phone=+55${telefone}&text=Olá!%20Encontrei%20o%20${local}%20pelo%20LocalizaP2W.%20Gostaria%20de%20mais%20informações!`)
     
     }
 
@@ -60,6 +60,7 @@ export default function Home({navigation, route}){
     const moreInformations = (place)=>{
         getImages(place._id)
         setInfo({isopen:true, place:place})
+        
     }
 
     const lessInformations = ()=>{
@@ -76,7 +77,7 @@ export default function Home({navigation, route}){
     }
 
     const getImages = (id) =>{
-    
+        setImages({pullimages:false, imgs:[]})
         var requestOptions = {
             method: 'GET',
             headers: {
@@ -93,6 +94,10 @@ export default function Home({navigation, route}){
             .then((data) => {
                   const list = []
                   data.map(e=> list.push(e.resource.secure_url))
+                  
+                  if(list.length===0){
+                    list.push("vazio") 
+                  }
                 
                   setImages({pullimages:true, imgs:list})
             }).catch((err) => Alert.alert("Erro", "Erro no servidor!"))
@@ -331,12 +336,21 @@ export default function Home({navigation, route}){
                     <View style={styles.containerImages}>
                         {images.pullimages?
                               images.imgs.map((item,index)=>{
+                                
                                 return(
                                     <View style={styles.item2} key={index}>
-                                        <TouchableOpacity onPress={()=> openViewImage(item)}>
-                                        <Image source={{uri:item}} style={styles.imageSelect}/> 
-                                        </TouchableOpacity>             
+                                        {item==="vazio"?
+                                        <Image source={noimages} style={styles.imageSelect}/>
+                                         :
+                                         <TouchableOpacity onPress={()=> openViewImage(item)}>
+                                        <Image source={{uri:item}} style={styles.imageSelect}/>
+                                        </TouchableOpacity>
+                                        }
+                                        
+                                        
+                                                    
                                     </View>
+                                    
                                     )        
                         })
                         : <ActivityIndicator style={{alignSelf:"center", marginTop:"50%"}} size ={30} color="white" />
