@@ -1,4 +1,6 @@
-# Engenharia de Software 2 
+<h1 align="center">
+Localiza Place2Watch (P2W)
+</h1>
 
 ## Equipe
 
